@@ -1,0 +1,45 @@
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\usepackage{parskip}
+\usepackage[normalem]{ulem}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+\title{AS.110.413 Introduction to Topology}
+\author{Daniel Yao}
+\date{Spring 2025}
+
+\graphicspath{ {./images/} }
+
+\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newgeometry{top=1in, bottom=1in, inner=1in, outer=1in}
+
+\titleformat{\subsection}
+  {\normalfont\bfseries}
+  {\thesection.\arabic{subsection}}{1em}{}
+
+\setcounter{section}{-1}
+
+\newcommand{\newsection}[1]{
+    \refstepcounter{section}
+    \addcontentsline{toc}{section}{\thesection\quad#1}
+    \setcounter{subsection}{-1}
+}
+
+\makeatletter
+\renewcommand{\l@section}{\@dottedtocline{1}{0em}{2.5em}}
+\renewcommand{\l@subsection}{\@dottedtocline{2}{1.5em}{3em}}
+\makeatother

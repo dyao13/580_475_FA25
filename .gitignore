@@ -1,0 +1,10 @@
+*.csv
+*.env
+*.venv
+*.html
+*.txt
+*.json
+*.png
+*.pyc
+
+__pycache__
