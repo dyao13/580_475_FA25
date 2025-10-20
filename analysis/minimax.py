@@ -149,7 +149,7 @@ class Minimax:
 
 def main():
     engine = Minimax(model='rf')
-    node = Node(mode='bounty', team1=[], team2=[])
+    node = Node(mode='knockout', team1=['BROCK'], team2=['GENE', 'MAX'])
 
     main_line, value = engine.get_main_line(node, 6)
 
