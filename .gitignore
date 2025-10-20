@@ -1,16 +1,14 @@
-*.csv
 *.env
 *.venv
 *.html
-*.txt
 *.json
-*.png
 *.pyc
 
 *.aux
 *.fdb_latexmk
 *.fls
 *.log
+*.out
 *.synctex.gz
 
 __pycache__
