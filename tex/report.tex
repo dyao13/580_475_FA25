@@ -71,8 +71,7 @@ The training/testing confusion matrices for each of the three models are shown i
 \label{tab:performance}
 \end{table}
 
-
-The testing accuracies of each of the three models are shown with 95\% confidence intervals (computed as binomial distributions) in Figure \ref{fig:acc}. A baseline positive rate reference is shown, which depicts the accuracy of always predicting the (training set) majority class. All three models perform with roughly 55\% accuracy, which is significantly better than the baseline positive rate at a significance level of $\alpha = 0.05$. The performance between the models is indistinguishable at a sifnificance level of $\alpha = 0.05$.
+The testing accuracies of each of the three models are shown with 95\% confidence intervals (computed as binomial distributions) in Figure \ref{fig:acc}. A baseline positive rate reference is shown, which depicts the accuracy of always predicting the (training set) majority class. All three models perform with roughly 55\% accuracy, which is significantly better than the baseline positive rate at a significance level of $\alpha = 0.05$. The performance between the models is indistinguishable at a significance level of $\alpha = 0.05$.
 
 \begin{figure}[h!]
 \centering
@@ -96,13 +95,13 @@ where $y$ is the vector of true labels and $\hat{y}$ is the vector of predicted 
 
 Each of the three models performs better than randomly guessing and explain a non-zero amount of variance. No model achieves very high accuracy, but this is expected because the draft is not the only factor that determines the outcome of a game.
 
-Strong conclusions are hard to draw from these results. There are many confounders at play. Though the outcome of a match can be predicted better than chance from only the draft, there is the possibility that players who are better mechanically are also better draft-wise. Nevertheless, a rough heuristic yields that these data are compatible with the explanation that (at least) 10\% of games are determined entirely by the draft while the other (at most) 90\% of games are determined entirely by mechanics. This roughly matches my experience from playing the game.
+Strong conclusions are hard to draw from these results. There are many confounders at play. Most importantly, though the outcome of a match can be predicted better than chance from only the draft, there is the possibility that players who are better mechanically are also better draft-wise. Nevertheless, a rough heuristic yields that these data are compatible with the explanation that (at least) 10\% of games are determined entirely by the draft while the other (at most) 90\% of games are determined entirely by mechanics. This roughly matches my experience from playing the game.
 
 Another limiation is that the data only included 5,414 games, while there are 
 $$\binom{82}{3,3,76} \big/ 2 = 3,501,618,120$$
 total match ups (A vs B is identical to B vs A). As such, almost all possible match ups are not represented in the data set. The models therefore operates almost entirely out of distribution. Nevertheless, the all three of the models are able to generalize to unseen data with better-than-guessing performances.
 
-A final limitation is that the choice of brawlers is very map dependent even within a game mode. To reduce the dimensionality of the state space, I aggregated the maps within each game mode. However, to those familiar with the game, this may not be reasonable. This limitation could be resolved with more data.
+A final limitation is that the choice of brawlers is very map dependent even within a game mode. To reduce the dimensionality of the state space, I aggregate the maps within each game mode. However, to those familiar with the game, this may not be reasonable. This limitation could be resolved with more data.
 
 \textbf{Application.} 
 
@@ -125,7 +124,7 @@ possible match ups (A vs B is not identical to B vs A). A full-depth search is c
     \hline
     \textbf{Utility} & & 55\% & &  & 45\% & 
 \end{tabular}
-\caption{Example draft.} Picks marked with $(*)$ are chosen by the minimax algorithm. Utility is measured by predicted victory probability.
+\caption{Example draft. Picks marked with $(*)$ are chosen by the minimax algorithm. Utility is measured by predicted victory probability.}
 \label{tab:draft}
 \end{table}
 
@@ -137,7 +136,7 @@ In this project, I predict the outcome of Brawl Stars matches given a draft. I d
 
 Each of these models achieve roughly 55\% accuracy and account for only 1-2\% of total variance in testing. Though it is hard to draw conclusions from a small data set, these results do not show that Brawl Stars has become 'Draft Stars'. It still seems that most variance in Brawl Stars is a function of mechanics and not draft.
 
-Possible next steps are to train the same models on more data. With more data, it would be valuable to use the map instead of the game mode as a predictor because the maps within a game mode can be dissimilar. A method to smooth the model or data over unseen match ups would also be valuable so that the model is punished for extreme predictions for mathc ups outside of the training set. Finally, the minimax algorithm could be improved in efficiency (by code optimization and lookup tables), and I could also explore non-ML techniques based on my domain knowledge to augment the utility predictions.
+Possible next steps are to train the same models on more data. With more data, it would be valuable to use the map instead of the game mode as a predictor because the maps within a game mode can be dissimilar. A method to smooth the model or data over unseen match ups would also be valuable so that the model is punished for extreme predictions for match ups outside of the training set. Finally, the minimax algorithm could be improved in efficiency (by code optimization and lookup tables), and I could also explore non-ML techniques based on my domain knowledge to augment the utility predictions.
 
 \textbf{Code availability.}
 
