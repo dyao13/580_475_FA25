@@ -137,6 +137,8 @@ In this project, I predict the outcome of Brawl Stars matches given a draft. I d
 
 Each of these models achieve roughly 55\% accuracy and account for only 1-2\% of total variance in testing. Though it is hard to draw conclusions from a small data set, these results do not show that Brawl Stars has become 'Draft Stars'. It still seems that most variance in Brawl Stars is a function of mechanics and not draft.
 
+Possible next steps are to train the same models on more data. With more data, it would be valuable to use the map instead of the game mode as a predictor because the maps within a game mode can be dissimilar. A method to smooth the model or data over unseen match ups would also be valuable so that the model is punished for extreme predictions for mathc ups outside of the training set. Finally, the minimax algorithm could be improved in efficiency (by code optimization and lookup tables), and I could also explore non-ML techniques based on my domain knowledge to augment the utility predictions.
+
 \textbf{Code availability.}
 
 \href{https://github.com/dyao13/580_475_FA25}{github.com/dyao13/580\_475\_FA25}
