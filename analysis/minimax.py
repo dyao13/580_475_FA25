@@ -6,6 +6,7 @@ from joblib import load
 import torch
 import torch.nn as nn
 
+# neural network class
 class Net(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
@@ -14,6 +15,7 @@ class Net(nn.Module):
     def forward(self, x):
         return self.net(x)
 
+# node class to represent current draft state
 class Node:
     def __init__(self, mode=None, bans1=[], bans2=[], team1=[], team2=[]):
         self.mode = mode
@@ -24,7 +26,9 @@ class Node:
         self.team1 = team1
         self.team2 = team2
 
+# minimax algorithm class
 class Minimax:
+    # initialize with model choice
     def __init__(self, model='rf'):
         self.model_path = os.path.join(os.path.dirname(__file__), "../models")
 
@@ -33,6 +37,7 @@ class Minimax:
         self.model_name = model
         self.model = self.get_model(self.model_name)
     
+    # get model from saved parameters
     def get_model(self, model):
         if model == 'rf':
             model = load(os.path.join(self.model_path, "rf.joblib"))
@@ -46,6 +51,7 @@ class Minimax:
         
         return model
     
+    # return prediction of victory probability
     def evaluation(self, node):
         team1 = node.team1
         team2 = node.team2
@@ -74,15 +80,16 @@ class Minimax:
         X = self.encoder.transform(X)
 
         if self.model_name == 'rf' or self.model_name == 'logreg':
-            val += self.model.predict_proba(X)[0][1]
+            val += 1 - self.model.predict_proba(X)[0][1]
         else:
             X = torch.tensor(X, dtype=torch.float32)
             
             with torch.no_grad():
-                val += self.model(X).item()
+                val += 1 - self.model(X).item()
 
         return val/2
 
+    # minimax algorithm
     def minimax(self, node, depth, alpha, beta, max_depth):
         if depth == 0 or (len(node.team1) == 3 and len(node.team2) == 3):
             return [], self.evaluation(node)
@@ -90,6 +97,7 @@ class Minimax:
         num1 = len(node.team1)
         num2 = len(node.team2)
 
+        # determine who's pick it is
         if (num1 == 0 and num2 == 0) or (num1 == 1 and num2 == 2) or (num1 == 2 and num2 == 2):
             isMaximizer = True
         else:
@@ -98,6 +106,7 @@ class Minimax:
         best_pick = None
         main_line = []
 
+        # maximize victory probability
         if isMaximizer:
             value = -float('inf')
 
@@ -116,7 +125,8 @@ class Minimax:
 
                     if value >= beta:
                         break 
-            
+
+        # minimize victory probability
         else:
             value = float('inf')
 
@@ -138,6 +148,7 @@ class Minimax:
 
         return main_line, value
     
+    # return draft order and victory probability
     def get_main_line(self, node, depth):
         num1 = len(node.team1)
         num2 = len(node.team2)
@@ -164,6 +175,7 @@ class Minimax:
             
         return line + main_line, value
 
+# driver
 def main():
     # engine = Minimax(model='rf')
     # node = Node(mode='knockout', team1=['BROCK'], team2=['GENE', 'MAX'])
