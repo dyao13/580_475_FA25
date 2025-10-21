@@ -52,6 +52,8 @@ class Minimax:
 
         team1.sort()
         team2.sort()
+        
+        val = 0
 
         state = [node.mode] + team1 + team2
 
@@ -59,12 +61,27 @@ class Minimax:
         X = self.encoder.transform(X)
 
         if self.model_name == 'rf' or self.model_name == 'logreg':
-            return self.model.predict_proba(X)[0][1]
+            val += self.model.predict_proba(X)[0][1]
         else:
             X = torch.tensor(X, dtype=torch.float32)
             
             with torch.no_grad():
-                return self.model(X).item()
+                val += self.model(X).item()
+
+        state = [node.mode] + team2 + team1
+
+        X = pd.DataFrame([state], columns=['mode', 'b1', 'b2', 'b3', 'r1', 'r2', 'r3'])
+        X = self.encoder.transform(X)
+
+        if self.model_name == 'rf' or self.model_name == 'logreg':
+            val += self.model.predict_proba(X)[0][1]
+        else:
+            X = torch.tensor(X, dtype=torch.float32)
+            
+            with torch.no_grad():
+                val += self.model(X).item()
+
+        return val/2
 
     def minimax(self, node, depth, alpha, beta, max_depth):
         if depth == 0 or (len(node.team1) == 3 and len(node.team2) == 3):
@@ -148,10 +165,34 @@ class Minimax:
         return line + main_line, value
 
 def main():
-    engine = Minimax(model='rf')
-    node = Node(mode='knockout', team1=['BROCK'], team2=['GENE', 'MAX'])
+    # engine = Minimax(model='rf')
+    # node = Node(mode='knockout', team1=['BROCK'], team2=['GENE', 'MAX'])
 
+    # main_line, value = engine.get_main_line(node, 6)
+
+    # print(main_line)
+    # print(value)
+
+    engine = Minimax(model='rf')
+    
+    mode = input("Select a game mode: ")
+    draft = input("Input a partial draft: ").split()
+    
+    team1 = []
+    team2 = []
+
+    for i in range(len(draft)):
+        if i == 0 or i == 3 or i == 4:
+            team1.append(draft[i])
+        elif i == 1 or i == 2 or i == 5:
+            team2.append(draft[i])
+        else:
+            raise ValueError("Invalid draft.")
+    
+    node = Node(mode=mode, team1=team1, team2=team2)
+    
     main_line, value = engine.get_main_line(node, 6)
+    main_line = [str(x) for x in main_line]
 
     print(main_line)
     print(value)
