@@ -41,7 +41,7 @@ class Minimax:
     def get_model(self, model):
         if model == 'rf':
             model = load(os.path.join(self.model_path, "rf.joblib"))
-        elif model == 'logreg':
+        elif model == 'lr':
             model = load(os.path.join(self.model_path, "lr.joblib"))
         elif model == 'nn':
             model = torch.load(os.path.join(self.model_path, "nn.pth"), weights_only=False)
@@ -59,6 +59,7 @@ class Minimax:
         team1.sort()
         team2.sort()
         
+        # average the evaluation from either team's perspective so smooth out model predictions
         val = 0
 
         state = [node.mode] + team1 + team2
@@ -120,7 +121,8 @@ class Minimax:
                         value = new_value
                         best_pick = brawler
                         main_line = [best_pick] + next_line
-                        
+
+                    # prune
                     alpha = max(alpha, value)
 
                     if value >= beta:
@@ -143,6 +145,7 @@ class Minimax:
 
                     beta = min(beta, value)
 
+                    # prune
                     if value <= alpha:
                         break
 
